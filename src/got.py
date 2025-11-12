@@ -41,7 +41,7 @@ def lee_batallas(ruta:str)->List[BatallaGOT]:
             batallas.append(batalla)
         return batallas 
     
-print(lee_batallas('data/battles.csv'))
+#print(lee_batallas('data/battles.csv'))
     
     
 def reyes_mayor_menor_ejercito(batallas: List[BatallaGOT]):
@@ -58,10 +58,48 @@ def reyes_mayor_menor_ejercito(batallas: List[BatallaGOT]):
         if batalla_menor is None or total_ejercito < ( (batalla_menor.num_atacantes or 0) + (batalla_menor.num_atacados or 0) ):
             batalla_menor = batalla
 
-    print("Rey con mayor ejército:", batalla_mayor.rey_atacante, "Comandantes:", batalla_mayor.comandantes_atacantes)
-    print("Rey con menor ejército:", batalla_menor.rey_atacante, "Comandantes:", batalla_menor.comandantes_atacantes)
+    print("Rey con mayor ejército:", batalla_mayor.rey_atacante, "Rey con menor ejército:", batalla_menor.rey_atacante)
+
+
+
+def batallas_mas_comandantes(batallas: List[BatallaGOT], regiones: set[str]| None = None, n: int| None = None) -> List[tuple[str, int]]:
+    
+    """lista de tuplas (nombre_batalla, num_comandantes) con las n batallas con mayor número de comandantes (atacantes + atacados)"""
+    
+    batallas_delfichero = batallas
+    
+    # Calculo el total de comandantes para cada batalla
+    
+    batallas_con_comandantes = [
+        (batalla.nombre, len(batalla.comandantes_atacantes) + len(batalla.comandantes_atacados))
+        for batalla in batallas_delfichero
+    ]
+    
+    # Ordeno por número de comandantes de mayor a menor
+    
+    batallas_ordenadas = sorted(batallas_con_comandantes)
+    
+    # Devolver las primeras n batallas
+    
+    if n is not None:
+        return batallas_ordenadas[:n]
+    else:
+        return batallas_ordenadas
+    
+def rey_mas_victorias():
+    
+ 
+ 
+ 
+ 
         
         
 if __name__ == "__main__":
     ruta_fichero = Path("data/battles.csv")
     batallas = lee_batallas(ruta_fichero)
+    reyes_mayor_menor_ejercito(batallas)
+    
+    print("\nTodas las batallas ordenadas por número de comandantes:")
+    resultado = batallas_mas_comandantes(batallas)
+    for i, (nombre, num) in enumerate(resultado, 1):
+        print(f"{i}-{(nombre, num)}")
